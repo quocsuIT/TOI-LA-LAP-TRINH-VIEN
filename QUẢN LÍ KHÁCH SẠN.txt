@@ -1,0 +1,92 @@
+CREATE DATABASE QLKS
+USE QLKS
+
+-- Tạo bảng KhachHang
+CREATE TABLE KhachHang (
+  MaKH INT IDENTITY(1,1) PRIMARY KEY, -- Mã khách hàng, tự động tăng
+  HoTen NVARCHAR(50) NOT NULL, -- Họ và tên khách hàng, bắt buộc nhập
+  CMND CHAR(9) NOT NULL, -- Số CMND của khách hàng, bắt buộc nhập
+  DiaChi NVARCHAR(100), -- Địa chỉ khách hàng
+  SoDienThoai CHAR(10) -- Số điện thoại khách hàng
+);
+
+-- Tạo bảng LoaiPhong
+CREATE TABLE LoaiPhong (
+  MaLoaiPhong INT IDENTITY(1,1) PRIMARY KEY, -- Mã loại phòng, tự động tăng
+  TenLoaiPhong NVARCHAR(50) NOT NULL, -- Tên loại phòng, bắt buộc nhập
+  DonGia INT NOT NULL -- Đơn giá của loại phòng, bắt buộc nhập
+);
+
+-- Tạo bảng TinhTrangPhong
+CREATE TABLE TinhTrangPhong (
+  MaTinhTrangPhong INT IDENTITY(0,1) PRIMARY KEY, -- Mã tình trạng phòng, tự động tăng
+  TenTinhTrangPhong NVARCHAR(50) NOT NULL -- Tên tình trạng phòng
+);
+
+-- Tạo bảng Phong
+CREATE TABLE Phong (
+  MaPhong INT IDENTITY(100,1) PRIMARY KEY, -- Mã phòng bắt đầu từ 100, tự động tăng
+  MaLoaiPhong INT NOT NULL, -- Mã loại phòng tương ứng với phòng này
+  TinhTrangPhong INT NOT NULL, -- Tình trạng phòng (đang trống, đang bận, đã đặt trước,...)  0 đang trống   1 đang bận   2 đã đặt trước
+  CONSTRAINT FK_LoaiPhong FOREIGN KEY (MaLoaiPhong) REFERENCES LoaiPhong(MaLoaiPhong), -- Khóa ngoại liên kết với bảng LoaiPhong
+  CONSTRAINT FK_TinhTrangPhong FOREIGN KEY (MaTinhTrangPhong) REFERENCES TinhTrangPhong(MaTinhTrangPhong)
+);
+
+
+-- Tạo bảng HoaDon
+CREATE TABLE HoaDon (
+  MaHoaDon INT IDENTITY(1,1) PRIMARY KEY, -- Mã hoá đơn, tự động tăng
+  MaPhong INT NOT NULL, -- Mã phòng tương ứng với hoá đơn này
+  MaKH INT NOT NULL, -- Mã khách hàng tương ứng với hoá đơn này
+  NgayDen DATE NOT NULL, -- Ngày khách đến
+  NgayDi DATE NOT NULL, -- Ngày khách trả phòng
+  CONSTRAINT FK_Phong FOREIGN KEY (MaPhong) REFERENCES Phong(MaPhong), -- Khóa ngoại liên kết với bảng Phong
+  CONSTRAINT FK_KhachHang FOREIGN KEY (MaKH) REFERENCES KhachHang(MaKH) -- Khóa ngoại liên kết với bảng KhachHang
+);
+
+
+-- Thêm các giá trị cho bảng LoaiPhong
+INSERT INTO LoaiPhong (TenLoaiPhong, DonGia)
+VALUES
+('Phòng Thường', 100000),
+('Phòng Sang', 200000),
+('Phòng Cao Cấp', 300000);
+
+-- Thêm 30 phòng vào bảng Phong, mỗi loại phòng có 10 phòng
+-- Thêm dữ liệu vào bảng Phong
+
+INSERT INTO Phong (MaLoaiPhong, TinhTrangPhong)
+VALUES (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0), (1, 0),  -- từ phòng 100 đến 109 ( 10 phòng )
+       (2, 0), (2, 0), (2, 0), (2, 0), (2, 0), (2, 0), (2, 0), (2, 0), (2, 0), (2, 0),  -- từ phòng 110 đến 119 ( 10 phòng )
+       (3, 0), (3, 0), (3, 0), (3, 0), (3, 0), (3, 0), (3, 0), (3, 0), (3, 0), (3, 0);  -- từ phòng 120 đến 129 ( 10 phòng )
+
+
+
+-- Hiển Thị danh sách tất cả các phòng : 
+SELECT * FROM Phong;
+-- Hiển Thị danh sách tất cả khách hàng :
+SELECT * FROM KhachHang;
+
+
+-- Thêm khách hàng 
+INSERT INTO KhachHang (HoTen, CMND, DiaChi, SoDienThoai) 
+VALUES ('ĐỖ QUỐC SỰ', '205106017', 'Địa chỉ', '0905090509');
+
+
+chạy hiển thị phòng trước rồi chọn
+
+--Lấy mã khách hàng
+DECLARE @MaKH INT;
+SET @MaKH = SCOPE_IDENTITY(); -- Lấy giá trị mã khách hàng vừa thêm vào bảng
+
+-- lấy mã phòng của số phòng mà khách hàng muốn đặt : phòng 105 
+DECLARE @MaPhong INT;
+SET @MaPhong = (SELECT MaPhong FROM Phong WHERE TinhTrangPhong = 0 AND MaLoaiPhong = 1 AND MaPhong = 105);
+
+-- Thêm thông tin đặt phòng vào bản hoá đơn 
+INSERT INTO HoaDon (MaPhong, MaKH, NgayDen, NgayDi) 
+VALUES (@MaPhong, @MaKH, '2023-04-09', '2023-04-11');
+
+
+-- cập nhật trạng thái sau khi khách hàng thue phòng 105 
+UPDATE Phong SET TinhTrangPhong = 1 WHERE MaPhong = @MaPhong;
