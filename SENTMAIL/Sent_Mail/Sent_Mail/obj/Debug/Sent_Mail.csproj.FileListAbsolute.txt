@@ -1,0 +1,11 @@
+C:\Code\SENTMAIL\Sent_Mail\Sent_Mail\obj\Debug\Sent_Mail.csproj.AssemblyReference.cache
+C:\Code\SENTMAIL\Sent_Mail\Sent_Mail\obj\Debug\Sent_Mail.csproj.SuggestedBindingRedirects.cache
+C:\Code\SENTMAIL\Sent_Mail\Sent_Mail\obj\Debug\Sent_Mail.Form1.resources
+C:\Code\SENTMAIL\Sent_Mail\Sent_Mail\obj\Debug\Sent_Mail.Properties.Resources.resources
+C:\Code\SENTMAIL\Sent_Mail\Sent_Mail\obj\Debug\Sent_Mail.csproj.GenerateResource.cache
+C:\Code\SENTMAIL\Sent_Mail\Sent_Mail\obj\Debug\Sent_Mail.csproj.CoreCompileInputs.cache
+C:\Code\SENTMAIL\Sent_Mail\Sent_Mail\bin\Debug\Sent_Mail.exe.config
+C:\Code\SENTMAIL\Sent_Mail\Sent_Mail\bin\Debug\Sent_Mail.exe
+C:\Code\SENTMAIL\Sent_Mail\Sent_Mail\bin\Debug\Sent_Mail.pdb
+C:\Code\SENTMAIL\Sent_Mail\Sent_Mail\obj\Debug\Sent_Mail.exe
+C:\Code\SENTMAIL\Sent_Mail\Sent_Mail\obj\Debug\Sent_Mail.pdb
